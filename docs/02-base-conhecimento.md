@@ -49,6 +49,8 @@ Existem duas possibilidades, injetar os dados diretamente no prompt (Ctrl + c, C
 
 **Nota:** Crie um arquivo load_hf_datasets.py, dentro da pasta src e insira o código nele para cria uma classe Dataloader para baixar dados direto do hugging face sem a necessidade de ter os arquivos localmente.
 
+## Os dados externos do site Hugging face serão carregados via Data Connector ou Data Adapter.
+
 ```python
 import pandas as pd
 
@@ -86,6 +88,8 @@ def load_financial_fraud_detection():
 
 ```
 
+## O sistema irá consumir diretamente chamando a função com os dados especificos.
+
 ```python
 # Exemplo de como usar no projeto (Dentro o arquivo app.py)
 
@@ -110,8 +114,43 @@ df_financial_fraud_detection_csv = load_financial_fraud_detection()
 
 ```
 
+# Os arquivos internos da pasta `data/raw` serão consumidos ou via código ou injetando os dados diretamente no prompt (Ctrl + c, Ctrl + v)
+
+```python
+import pandas as pd
+from pathlib import Path
+
+# Caminho base dos dados
+DATA_RAW_PATH = Path("data/raw")
+
+# 1️⃣ Perfil do Investidor (JSON)
+df_perfil_investidor = pd.read_json(
+    DATA_RAW_PATH / "perfil_investidor.json"
+)
+
+# 2️⃣ Transações Financeiras (CSV)
+df_transacoes = pd.read_csv(
+    DATA_RAW_PATH / "transacoes.csv"
+)
+
+# 3️⃣ Movimentações Financeiras (CSV)
+df_movimentacoes = pd.read_csv(
+    DATA_RAW_PATH / "movimentacoes.csv"
+)
+
+# Verificação rápida
+print("Perfil Investidor:", df_perfil_investidor.shape)
+print("Transações:", df_transacoes.shape)
+print("Movimentações:", df_movimentacoes.shape)
+
+```
+
 ### Como os dados são usados no prompt?
 > Os dados vão no system prompt? São consultados dinamicamente?
+
+Os dados serão parte injetado com dados estáticos para uma fácil compreensão e usabilidade no projeto sendo consumido via código ou diretamente pelo prompt.
+Lembrando que em soluções mais robustas, o ideal é que esses dados sejam carregados dinamicamente como estão sendo carregados os dados via Data Connector direto do site Hugging Face, essa solução de Data Connector também pode usado com S3(`s3://`), GCS(`gs://`), Azure Blob(`abfs://`).
+Enfim o projeto está pronto para ser escalado a um projeto com mais robustes.
 
 ```text
 Perfil do Investidor
@@ -127,12 +166,118 @@ Os dados são analisados para identificar características gerais do investidor 
 - tolerância ao risco
 - nível de comprometimento da renda
 - Esses indicadores entram no prompt como contexto comportamental, não como dados pessoais brutos.
+```
+#### Esse é o formato do arquivo extraido do arquivo perfil_investidor.json.
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>investidor_id</th>
+      <th>nome</th>
+      <th>idade</th>
+      <th>profissao</th>
+      <th>renda_mensal</th>
+      <th>perfil_investidor</th>
+      <th>objetivo_principal</th>
+      <th>patrimonio_total</th>
+      <th>reserva_emergencia_atual</th>
+      <th>aceita_risco</th>
+      <th>metas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>João Silva</td>
+      <td>32</td>
+      <td>Analista de Sistemas</td>
+      <td>5000</td>
+      <td>moderado</td>
+      <td>Construir reserva de emergência</td>
+      <td>15000</td>
+      <td>10000</td>
+      <td>False</td>
+      <td>[{'meta': 'Completar reserva de emergência', '...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Maria Oliveira</td>
+      <td>28</td>
+      <td>Designer</td>
+      <td>4200</td>
+      <td>conservador</td>
+      <td>Organizar finanças pessoais</td>
+      <td>8000</td>
+      <td>3000</td>
+      <td>False</td>
+      <td>[{'meta': 'Reserva de emergência', 'valor_nece...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Carlos Mendes</td>
+      <td>45</td>
+      <td>Gerente Comercial</td>
+      <td>9500</td>
+      <td>moderado</td>
+      <td>Aposentadoria</td>
+      <td>220000</td>
+      <td>40000</td>
+      <td>True</td>
+      <td>[{'meta': 'Aumentar patrimônio para aposentado...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Ana Costa</td>
+      <td>35</td>
+      <td>Empreendedora</td>
+      <td>12000</td>
+      <td>arrojado</td>
+      <td>Crescimento patrimonial</td>
+      <td>180000</td>
+      <td>30000</td>
+      <td>True</td>
+      <td>[{'meta': 'Diversificar investimentos', 'valor...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Pedro Santos</td>
+      <td>22</td>
+      <td>Estudante</td>
+      <td>1800</td>
+      <td>conservador</td>
+      <td>Educação financeira</td>
+      <td>2000</td>
+      <td>500</td>
+      <td>False</td>
+      <td>[{'meta': 'Criar reserva inicial', 'valor_nece...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+```text
 Transações Financeiras
 
-Datasets:
-
-transacoes.csv
+Datasets: transacoes.csv
 
 Uso no prompt:
 Os dados são analisados para identificar padrões de comportamento financeiro e gerar indicadores como:
@@ -141,44 +286,198 @@ Os dados são analisados para identificar padrões de comportamento financeiro e
 - variações atípicas de valor ou frequência
 - concentração de gastos por categoria
 - Esses indicadores entram no prompt como sinais de alerta ou normalidade, não como histórico detalhado.
+```
 
+#### Esse é o formato do arquivo extraido do arquivo transacoes.csv
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>data</th>
+      <th>descricao</th>
+      <th>categoria</th>
+      <th>valor</th>
+      <th>tipo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2025-10-01</td>
+      <td>Salário</td>
+      <td>receita</td>
+      <td>5000.0</td>
+      <td>entrada</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2025-10-02</td>
+      <td>Aluguel</td>
+      <td>moradia</td>
+      <td>1200.0</td>
+      <td>saida</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2025-10-03</td>
+      <td>Supermercado</td>
+      <td>alimentacao</td>
+      <td>450.0</td>
+      <td>saida</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2025-10-05</td>
+      <td>Netflix</td>
+      <td>lazer</td>
+      <td>55.9</td>
+      <td>saida</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2025-10-07</td>
+      <td>Farmácia</td>
+      <td>saude</td>
+      <td>89.0</td>
+      <td>saida</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+```text
 Movimentações Financeiras
 
-Datasets:
+Datasets: movimentacoes.csv
 
-movimentacoes.csv
-
-Uso no prompt:
-Os dados são analisados para avaliar fluxo financeiro e consistência das movimentações, gerando indicadores como:
+Uso no prompt: Os dados são analisados para avaliar fluxo financeiro e consistência das movimentações, gerando indicadores como:
 
 - entradas vs. saídas de recursos
 - possíveis inconsistências financeiras
 - períodos de desequilíbrio no fluxo de caixa
 - Esses indicadores entram no prompt como alertas de risco financeiro, não como registros individuais.
+```
 
+#### Esse é o formato do arquivo extraido do arquivo movimentacoes.csv
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>movimentacao_id</th>
+      <th>investidor_id</th>
+      <th>data_movimentacao</th>
+      <th>descricao</th>
+      <th>categoria</th>
+      <th>tipo</th>
+      <th>valor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>2025-10-01</td>
+      <td>Salário</td>
+      <td>receita</td>
+      <td>entrada</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>1</td>
+      <td>2025-10-02</td>
+      <td>Aluguel</td>
+      <td>moradia</td>
+      <td>saida</td>
+      <td>1200.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>2</td>
+      <td>2025-10-01</td>
+      <td>Salário</td>
+      <td>receita</td>
+      <td>entrada</td>
+      <td>4200.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>2</td>
+      <td>2025-10-05</td>
+      <td>Supermercado</td>
+      <td>alimentacao</td>
+      <td>saida</td>
+      <td>600.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>3</td>
+      <td>2025-10-01</td>
+      <td>Salário</td>
+      <td>receita</td>
+      <td>entrada</td>
+      <td>9500.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+## Dados externos do Hugging Face
+```text
 Detecção de fraude
 
-Datasets:
+Datasets Externo:
 
 credit_fraud_detection.parquet
 financial_fraud_detection.csv
 
-Uso no prompt:
-Os dados são analisados para identificar padrões suspeitos e gerar indicadores como:
+Uso no prompt: Os dados são analisados para identificar padrões suspeitos e gerar indicadores como:
 
 - nível de risco de fraude (baixo, médio, alto)
 - probabilidade estimada de fraude
 - tipo de risco detectado (transação fora do padrão, horário incomum, valor atípico)
 - Esses indicadores entram no prompt como alertas de risco, não como dados brutos.
 
+#==========================================================================#
+
 Análise de risco de crédito
 
-Dataset:
+Dataset Externo: credit_risk.csv
 
-credit_risk.csv
-
-Uso no prompt:
-Os dados são usados para classificar o usuário em faixas de risco de crédito, como:
+Uso no prompt: Os dados são usados para classificar o usuário em faixas de risco de crédito, como:
 
 - baixo, médio ou alto risco
 - probabilidade de inadimplência
@@ -186,13 +485,12 @@ Os dados são usados para classificar o usuário em faixas de risco de crédito,
 - Essas classificações orientam o tom e o nível de cautela das respostas do agente.
 - Perfil financeiro e comportamento de consumo
 
-Datasets:
+Datasets Externo:
 
 personal_finance_json.jsonl
 personal_finance.parquet
 
-Uso no prompt:
-Os dados são utilizados para identificar padrões de comportamento, como:
+Uso no prompt: Os dados são utilizados para identificar padrões de comportamento, como:
 
 - hábitos de consumo
 - relação gasto vs. renda
@@ -224,182 +522,87 @@ Os dados são processados previamente para gerar indicadores de risco, classific
 
 > Mostre um exemplo de como os dados são formatados para o agente.
 
-O exemplo do contexto montado abaixo, se baseia nos dados originais da base de conhecimento, que será extraido diretamente do site `Hugging Face`, mas serão sintetizados deixando apenas as informações mais relevantes, otimizando assim o consumo de tokens. Entretanto, vale lembrar que mais importante que econimizar tokens, é ter todas as informações relevantes disponiveis em seu contexto.
+O exemplo do contexto montado abaixo, se baseia nos dados internos da base de conhecimento, e também serão extraidos diretamente do site `Hugging Face` dados para averiguações estatísticas que se refere a possíveis movimentações e ações de fraude, os dados serão sintetizados deixando apenas as informações mais relevantes, otimizando assim o consumo de tokens. Entretanto, vale lembrar que mais importante que econimizar tokens, é ter todas as informações relevantes disponiveis em seu contexto.
 
-## 1️⃣ Camada de Fraude Financeira
+## 🧍‍♂️ DADOS DO CLIENTE (INTERNOS)
 ```text
-Origem: df_credit_fraud_detection_parquet
+Identificação do Cliente:
+- Nome: João Silva
+- Perfil financeiro: Impulsivo
+- Objetivo financeiro: Aumentar renda mantendo segurança
+- Tolerância ao risco: Baixa
+- Estabilidade financeira: Média
+- Reserva atual: R$ 15.000
+- Meta de reserva: R$ 25.000
+```
+## 💳 RESUMO DE GASTOS E MOVIMENTAÇÕES
 
-🔧 Dados brutos (internos)
+```text
+Resumo Financeiro Recente:
+- Moradia: R$ 2.100
+- Alimentação: R$ 1.450
+- Transporte: R$ 620
+- Saúde: R$ 310
+- Lazer: R$ 980
+- Total de gastos mensais: R$ 5.460
 
-- amount
-- saldo antes/depois
-- tipo de ação (cash_in, cash_out, transfer…)
-- flag de fraude
+Fluxo Financeiro:
+- Relação entradas vs. saídas: Desfavorável
+- Frequência de desequilíbrio: Frequente
+- Tendência observada: Risco de descontrole
+```
 
-✅ Formato entregue ao agente (Brasil)
+## 🔍 ANÁLISE DE TRANSAÇÃO ESPECÍFICA (FRAUDE)
+
+```text
 Análise de Transação:
 - Tipo de operação: Saque
-- Valor da transação: R$ 1.221.867,91
-- Saldo antes da operação: R$ 1.221.867,91
-- Saldo após a operação: R$ 0,00
-- Comportamento identificado: Atípico
+- Valor da transação: R$ 48.900
+- Horário: Noturno
+- Comportamento identificado: Fora do padrão histórico
 - Nível de risco de fraude: Alto
-
-🌎 Formato (Usuário estrangeiro)
-
-Transaction Analysis:
-- Operation type: Cash Out
-- Transaction amount: $1,221,867.91
-- Balance before transaction: $1,221,867.91
-- Balance after transaction: $0.00
-- Detected behavior: Anomalous
-- Fraud risk level: High
-```
-## 2️⃣ Camada de Classificação de Fraude (Texto Interpretado)
-
-```text
-Origem: df_financial_fraud_detection_csv
-
-🔧 Dados brutos
-
-- input
-- response
-- risk_classification
-
-✅ Formato entregue ao agente (Brasil)
-Classificação de Risco Financeiro:
-- Situação analisada: Relação renda x dívida elevada
-- Classificação de risco: Muito Alto
-- Interpretação: A capacidade de pagamento atual é incompatível com o nível de endividamento.
-
-🌎 Formato (Usuário estrangeiro)
-Financial Risk Classification:
-- Evaluated scenario: High debt-to-income ratio
-- Risk classification: Very High
-- Interpretation: Current income does not support existing debt obligations.
 ```
 
-## 3️⃣ Camada de Risco de Crédito
-
+## 📉 AVALIAÇÃO DE RISCO DE CRÉDITO (BASE EXTERNA)
 ```text
-Origem: df_credit_risk_csv
-
-✅ Formato entregue ao agente (Brasil)
 Avaliação de Crédito:
 - Nível de risco de crédito: Alto
 - Probabilidade estimada de inadimplência: Elevada
-- Recomendação do guardião: Ação cautelosa
-
-🌎 Formato (Usuário estrangeiro)
-Credit Risk Assessment:
-- Credit risk level: High
-- Estimated default probability: Elevated
-- Guardian recommendation: Proceed with caution
+- Principal fator de risco: Alto comprometimento de renda
 ```
 
-## 4️⃣ Perfil Financeiro e Comportamento
+## 🧠 PERFIL COMPORTAMENTAL INFERIDO
 ```text
-Origem:
-
-df_personal_finance_json
-df_personal_finance_parquet
-
-🔧 Dados usados
-
-- categoria (dívida, investimento, aposentadoria…)
-- padrão de linguagem
-- resposta aceita vs rejeitada
-
-✅ Formato entregue ao agente (Brasil)
-Perfil Financeiro do Usuário:
-- Categoria dominante: Gestão de Dívidas
-- Comportamento observado: Tendência a decisões emocionais
+Perfil Comportamental:
+- Tendência dominante: Decisões emocionais sob pressão
+- Reação a alertas: Parcialmente responsiva
 - Estilo de comunicação recomendado: Educativo e preventivo
-- Perfil financeiro inferido: Impulsivo
-
-🌎 Formato (Usuário estrangeiro)
-User Financial Profile:
-- Dominant category: Debt Management
-- Observed behavior: Emotion-driven decisions
-- Recommended communication style: Educational and preventive
-- Inferred financial profile: Impulsive
 ```
 
-## 5️⃣ Contexto Final Consolidado (o que vai para o prompt)
-**🇧🇷 Brasil**
+## ⚠️ TIPOS DE RISCOS IDENTIFICADOS
 ```text
-Resumo do Guardião Financeiro:
+Mapa de Riscos:
 - Risco de fraude: Alto
-- Risco de crédito: Muito Alto
-- Perfil financeiro: Impulsivo
-- Ação recomendada: Alerta preventivo e explicação detalhada
-
-🌍 Internacional
-Financial Guardian Summary:
-- Fraud risk: High
-- Credit risk: Very High
-- Financial profile: Impulsive
-- Recommended action: Preventive alert with clear explanation
+- Risco de crédito: Alto
+- Risco de descontrole financeiro: Médio
+- Risco de decisão impulsiva: Elevado
 ```
-## 6️⃣ Camada de Perfil do Investidor
+
+## 🛡️ CONTEXTO FINAL CONSOLIDADO (ENVIADO AO PROMPT)
 ```text
-Origem: perfil_investidor.json
+Resumo do Guardião Financeiro Fortis:
+- Perfil: Impulsivo
+- Reserva abaixo da meta
+- Fluxo financeiro instável
+- Risco de fraude elevado em transação recente
+- Risco de crédito elevado
+- Ação sugerida: Alerta preventivo com explicação clara e orientação segura
 
-🔧 Dados brutos (internos)
-
-- renda mensal
-- tolerância ao risco
-- histórico financeiro
-- objetivo financeiro
-
-✅ Formato entregue ao agente
-
-Perfil Financeiro:
-
-- Tipo de perfil: Impulsivo
-- Tolerância ao risco: Baixa
-- Estabilidade financeira: Média
-- Grau de comprometimento de renda: Alto
 ```
 
-## 7️⃣ Camada de Transações Financeiras
-```text
-Origem: transacoes.csv
+## 📌 Observação Importante
 
-🔧 Dados brutos (internos)
-
-- data da transação
-- categoria
-- valor
-- tipo (entrada / saída)
-
-✅ Formato entregue ao agente
-
-Padrão de Transações:
-
-- Frequência de gastos: Alta
-- Categoria dominante: Consumo
-- Variação de valores: Elevada
-- Comportamento financeiro: Inconsistente
-```
-
-## 8️⃣ Camada de Movimentações Financeiras
-```text
-Origem: movimentacoes.csv
-
-🔧 Dados brutos (internos)
-
-- entradas e saídas
-- saldo acumulado
-- períodos de desequilíbrio
-
-✅ Formato entregue ao agente
-
-Fluxo Financeiro:
-
-- Relação entradas vs. saídas: Desfavorável
-- Períodos de desequilíbrio: Frequentes
-- Tendência financeira: Risco de descontrole
-- Nível de alerta financeiro: Médio
-```
+- O agente não recebe dados brutos
+- Bases do Hugging Face são usadas apenas como referência estatística
+- O prompt contém sinais, classificações e alertas
+- Isso reduz tokens, evita alucinação e mantém o Fortis dentro do escopo legal e ético
