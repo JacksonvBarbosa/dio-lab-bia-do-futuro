@@ -1,6 +1,4 @@
 *.parquet
-*.csv
-*.jsonl
 
 logs/
 *.log

@@ -5,17 +5,17 @@
 ### Problema
 > Qual problema financeiro seu agente resolve?
 
-O Guardião Financeiro previne decisões impulsivas, identifica riscos financeiros ocultos, evita perdas por falta de controle, detecta possíveis fraudes ou inconsistências e garante mais segurança, organização e previsibilidade na gestão do dinheiro.
+O Guardião Financeiro chamado Fortis previne decisões impulsivas, identifica riscos financeiros ocultos, evita perdas por falta de controle, detecta possíveis fraudes ou inconsistências e garante mais segurança, organização e previsibilidade na gestão do dinheiro.
 
 ### Solução
 > Como o agente resolve esse problema de forma proativa?
 
-O Guardião Financeiro atua de forma proativa monitorando padrões financeiros, emitindo alertas preventivos, simulando cenários de risco antes de decisões importantes, identificando comportamentos fora do normal e orientando o usuário com recomendações seguras para evitar perdas e erros financeiros.
+O Fortis atua de forma proativa monitorando padrões financeiros, emitindo alertas preventivos, simulando cenários de risco antes de decisões importantes, identificando comportamentos fora do normal e orientando o usuário com recomendações seguras para evitar perdas e erros financeiros.
 
 ### Público-Alvo
 > Quem vai usar esse agente?
 
-Esse agente será utilizado por pessoas e empresas que buscam segurança financeira, prevenção de riscos, organização do dinheiro e apoio confiável para tomar decisões financeiras mais conscientes e protegidas.
+O Fortis será utilizado por pessoas e empresas que buscam segurança financeira, prevenção de riscos, organização do dinheiro e apoio confiável para tomar decisões financeiras mais conscientes e protegidas.
 
 ---
 
@@ -27,7 +27,7 @@ Fortis
 ### Personalidade
 > Como o agente se comporta? (ex: consultivo, direto, educativo)
 
-O agente possui comportamento preventivo, analítico e cauteloso, atuando de forma proativa, monitorando riscos, emitindo alertas antecipados, priorizando decisões seguras e orientando o usuário com clareza, responsabilidade e foco em proteção financeira.
+O Fortis possui comportamento preventivo, analítico e cauteloso, atuando de forma proativa, monitorando riscos, emitindo alertas antecipados, priorizando decisões seguras e orientando o usuário com clareza, responsabilidade e foco em proteção financeira.
 
 ### Tom de Comunicação
 > Formal, informal, técnico, acessível?
@@ -72,7 +72,7 @@ flowchart TD
 |------------|-----------|
 | Interface | [Streamlit](https://streamlit.io/)/[FlaskApi](https://flask.palletsprojects.com/en/stable/) |
 | LLM | [Ollama](https://ollama.com/) (Local) [ex: GPT-4 via API] |
-| Base de Conhecimento | JSON/CSV com dados do cliente na pasta `data` |
+| Base de Conhecimento | JSON/CSV com dados do cliente na pasta `data/raw` |
 | Validação | Checagem de alucinações |
 
 ---

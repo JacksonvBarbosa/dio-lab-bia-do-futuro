@@ -2,15 +2,29 @@
 
 ## Dados Utilizados
 
-Descreva se usou os arquivos da pasta `data`, por exemplo:
+O projeto utiliza duas fontes de dados complementares: dados mockados internos para simulação e datasets públicos do Hugging Face como base de referência analítica.
 
-| Arquivo | Formato | Utilização no Agente |
-|---------|---------|---------------------|
-| `credit_fraud_detection.parquet` e `financial_fraud_detection.csv` | Parquet | Análisa padrões de possiveis ações fraudulentas, excelente para camada de risco |
-| `credit_risk.csv` | csv | Avalia o risco de crédito, inferi probabilidade de inadimplência e classifica usuários por nível de risco |
-| `personal_finance_json.jsonl` e `personal_finance.parquet` | json | Identifica hábitos de consumo, entende padrões de gasto vs. renda e inferi perfil financeiro (conservador, moderado, impulsivo, etc.) |
+**1️⃣ Dados Mockados do Projeto (data/raw)**
+
+Utilizados para simular investidores fictícios, comportamentos financeiros e cenários controlados durante testes e demonstrações do agente.
+
+| Arquivo                                                    | Formato        | Utilização no Agente                                                                               |
+| ---------------------------------------------------------- | -------------- | -------------------------------------------------------------------------------------------------- |
+| `perfil_investidor.json`                                   | json           | Define perfis fictícios de investidores para simulação de comportamento financeiro                 |
+| `transacoes.csv` e `movimentacoes.csv`                     | csv            | Simula histórico de transações e movimentações financeiras para análise de padrões e alertas       |
 
 ---
+
+**2️⃣ Datasets do Hugging Face (Referência)**
+
+Utilizados como base estatística e comportamental, apoiando a detecção de risco, fraude e inadimplência.
+
+| Arquivo                                                            | Formato        | Utilização no Agente                                                        |
+| ------------------------------------------------------------------ | -------------- | --------------------------------------------------------------------------- |
+| `credit_fraud_detection.parquet` e `financial_fraud_detection.csv` | parquet / csv  | Analisa padrões de possíveis ações fraudulentas, apoiando a camada de risco |
+| `credit_risk.csv`                                                  | csv            | Avalia risco de crédito, inferindo probabilidade de inadimplência           |
+| `personal_finance_json.jsonl` e `personal_finance.parquet`         | json / parquet | Identifica hábitos de consumo, relação gasto vs renda e perfil financeiro   |
+
 
 > [!TIP]
 > **Caso deseje um dataset mais robusto?** Você pode utilizar datasets públicos do [Hugging Face](https://huggingface.co/datasets) relacionados a finanças, desde que sejam adequados ao contexto do desafio.
@@ -33,7 +47,7 @@ Todos os dados estão em padrão extrangeiro então a inteligência artifical ir
 
 Existem duas possibilidades, injetar os dados diretamente no prompt (Ctrl + c, Ctrl + v) ou carregar os arquivos via código, como no exemplo abaixo:
 
-**Nota:** Crie um arquivo load_hf_datasets.py, dentro da pasta src e insira o código nele para cria uma classe Dataloader sendo mais fácil de ser manipulada.
+**Nota:** Crie um arquivo load_hf_datasets.py, dentro da pasta src e insira o código nele para cria uma classe Dataloader para baixar dados direto do hugging face sem a necessidade de ter os arquivos localmente.
 
 ```python
 import pandas as pd
@@ -100,6 +114,48 @@ df_financial_fraud_detection_csv = load_financial_fraud_detection()
 > Os dados vão no system prompt? São consultados dinamicamente?
 
 ```text
+Perfil do Investidor
+
+Datasets:
+
+perfil_investidor.json
+
+Uso no prompt:
+Os dados são analisados para identificar características gerais do investidor e gerar indicadores como:
+
+- perfil financeiro (conservador, moderado, impulsivo)
+- tolerância ao risco
+- nível de comprometimento da renda
+- Esses indicadores entram no prompt como contexto comportamental, não como dados pessoais brutos.
+
+Transações Financeiras
+
+Datasets:
+
+transacoes.csv
+
+Uso no prompt:
+Os dados são analisados para identificar padrões de comportamento financeiro e gerar indicadores como:
+
+- padrão de gastos recorrentes
+- variações atípicas de valor ou frequência
+- concentração de gastos por categoria
+- Esses indicadores entram no prompt como sinais de alerta ou normalidade, não como histórico detalhado.
+
+Movimentações Financeiras
+
+Datasets:
+
+movimentacoes.csv
+
+Uso no prompt:
+Os dados são analisados para avaliar fluxo financeiro e consistência das movimentações, gerando indicadores como:
+
+- entradas vs. saídas de recursos
+- possíveis inconsistências financeiras
+- períodos de desequilíbrio no fluxo de caixa
+- Esses indicadores entram no prompt como alertas de risco financeiro, não como registros individuais.
+
 Detecção de fraude
 
 Datasets:
@@ -138,11 +194,9 @@ personal_finance.parquet
 Uso no prompt:
 Os dados são utilizados para identificar padrões de comportamento, como:
 
-hábitos de consumo
-
-relação gasto vs. renda
-
-perfil financeiro (conservador, moderado, impulsivo)
+- hábitos de consumo
+- relação gasto vs. renda
+- perfil financeiro (conservador, moderado, impulsivo)
 
 Essas informações entram no prompt para contextualizar as respostas e evitar recomendações inadequadas ao perfil do usuário.
 
@@ -150,21 +204,16 @@ Forma final no prompt
 
 No prompt, o agente recebe apenas informações consolidadas, por exemplo:
 
-“Risco de fraude: alto”
-
-“Perfil financeiro: impulsivo”
-
-“Risco de crédito: médio”
+- “Risco de fraude: alto”
+- “Perfil financeiro: impulsivo”
+- “Risco de crédito: médio”
 
 Esses dados são usados para:
 
-justificar alertas
-
-prevenir decisões impulsivas
-
-explicar riscos de forma clara
-
-garantir respostas seguras e coerentes
+- justificar alertas
+- prevenir decisões impulsivas
+- explicar riscos de forma clara
+- garantir respostas seguras e coerentes
 ________________________________________________________________________________
 Os dados são processados previamente para gerar indicadores de risco, classificações e perfis financeiros, que são então inseridos no prompt do agente como contexto resumido, permitindo respostas seguras, explicáveis e alinhadas ao papel do Guardião Financeiro.
 ```
@@ -292,4 +341,65 @@ Financial Guardian Summary:
 - Credit risk: Very High
 - Financial profile: Impulsive
 - Recommended action: Preventive alert with clear explanation
+```
+## 6️⃣ Camada de Perfil do Investidor
+```text
+Origem: perfil_investidor.json
+
+🔧 Dados brutos (internos)
+
+- renda mensal
+- tolerância ao risco
+- histórico financeiro
+- objetivo financeiro
+
+✅ Formato entregue ao agente
+
+Perfil Financeiro:
+
+- Tipo de perfil: Impulsivo
+- Tolerância ao risco: Baixa
+- Estabilidade financeira: Média
+- Grau de comprometimento de renda: Alto
+```
+
+## 7️⃣ Camada de Transações Financeiras
+```text
+Origem: transacoes.csv
+
+🔧 Dados brutos (internos)
+
+- data da transação
+- categoria
+- valor
+- tipo (entrada / saída)
+
+✅ Formato entregue ao agente
+
+Padrão de Transações:
+
+- Frequência de gastos: Alta
+- Categoria dominante: Consumo
+- Variação de valores: Elevada
+- Comportamento financeiro: Inconsistente
+```
+
+## 8️⃣ Camada de Movimentações Financeiras
+```text
+Origem: movimentacoes.csv
+
+🔧 Dados brutos (internos)
+
+- entradas e saídas
+- saldo acumulado
+- períodos de desequilíbrio
+
+✅ Formato entregue ao agente
+
+Fluxo Financeiro:
+
+- Relação entradas vs. saídas: Desfavorável
+- Períodos de desequilíbrio: Frequentes
+- Tendência financeira: Risco de descontrole
+- Nível de alerta financeiro: Médio
 ```
