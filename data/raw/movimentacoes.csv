@@ -1,0 +1,21 @@
+movimentacao_id,investidor_id,data_movimentacao,descricao,categoria,tipo,valor
+1,1,2025-10-01,Salário,receita,entrada,5000.00
+2,1,2025-10-02,Aluguel,moradia,saida,1200.00
+3,2,2025-10-01,Salário,receita,entrada,4200.00
+4,2,2025-10-05,Supermercado,alimentacao,saida,600.00
+5,3,2025-10-01,Salário,receita,entrada,9500.00
+6,3,2025-10-10,Escola dos filhos,educacao,saida,1800.00
+7,4,2025-10-03,Pró-labore,receita,entrada,12000.00
+8,4,2025-10-12,Investimento,investimentos,saida,5000.00
+9,5,2025-10-01,Bolsa estágio,receita,entrada,1800.00
+10,5,2025-10-08,Livros,educacao,saida,300.00
+11,6,2025-10-01,Plantão hospitalar,receita,entrada,18000.00
+12,6,2025-10-15,Seguro,saude,saida,1200.00
+13,7,2025-10-01,Salário,receita,entrada,9000.00
+14,7,2025-10-18,Ações,investimentos,saida,3000.00
+15,8,2025-10-01,Freelance,receita,entrada,3500.00
+16,8,2025-10-20,Aluguel,moradia,saida,1100.00
+17,9,2025-10-01,Salário,receita,entrada,11000.00
+18,9,2025-10-22,Financiamento,moradia,saida,2200.00
+19,10,2025-10-01,Salário,receita,entrada,6500.00
+20,10,2025-10-25,Plano de saúde,saude,saida,900.00

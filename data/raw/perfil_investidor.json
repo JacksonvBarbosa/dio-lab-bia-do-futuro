@@ -1,0 +1,192 @@
+[
+  {
+    "investidor_id": 1,
+    "nome": "João Silva",
+    "idade": 32,
+    "profissao": "Analista de Sistemas",
+    "renda_mensal": 5000.00,
+    "perfil_investidor": "moderado",
+    "objetivo_principal": "Construir reserva de emergência",
+    "patrimonio_total": 15000.00,
+    "reserva_emergencia_atual": 10000.00,
+    "aceita_risco": false,
+    "metas": [
+      {
+        "meta": "Completar reserva de emergência",
+        "valor_necessario": 15000.00,
+        "prazo": "2026-06"
+      }
+    ]
+  },
+  {
+    "investidor_id": 2,
+    "nome": "Maria Oliveira",
+    "idade": 28,
+    "profissao": "Designer",
+    "renda_mensal": 4200.00,
+    "perfil_investidor": "conservador",
+    "objetivo_principal": "Organizar finanças pessoais",
+    "patrimonio_total": 8000.00,
+    "reserva_emergencia_atual": 3000.00,
+    "aceita_risco": false,
+    "metas": [
+      {
+        "meta": "Reserva de emergência",
+        "valor_necessario": 12000.00,
+        "prazo": "2026-12"
+      }
+    ]
+  },
+  {
+    "investidor_id": 3,
+    "nome": "Carlos Mendes",
+    "idade": 45,
+    "profissao": "Gerente Comercial",
+    "renda_mensal": 9500.00,
+    "perfil_investidor": "moderado",
+    "objetivo_principal": "Aposentadoria",
+    "patrimonio_total": 220000.00,
+    "reserva_emergencia_atual": 40000.00,
+    "aceita_risco": true,
+    "metas": [
+      {
+        "meta": "Aumentar patrimônio para aposentadoria",
+        "valor_necessario": 500000.00,
+        "prazo": "2035-01"
+      }
+    ]
+  },
+  {
+    "investidor_id": 4,
+    "nome": "Ana Costa",
+    "idade": 35,
+    "profissao": "Empreendedora",
+    "renda_mensal": 12000.00,
+    "perfil_investidor": "arrojado",
+    "objetivo_principal": "Crescimento patrimonial",
+    "patrimonio_total": 180000.00,
+    "reserva_emergencia_atual": 30000.00,
+    "aceita_risco": true,
+    "metas": [
+      {
+        "meta": "Diversificar investimentos",
+        "valor_necessario": 250000.00,
+        "prazo": "2027-06"
+      }
+    ]
+  },
+  {
+    "investidor_id": 5,
+    "nome": "Pedro Santos",
+    "idade": 22,
+    "profissao": "Estudante",
+    "renda_mensal": 1800.00,
+    "perfil_investidor": "conservador",
+    "objetivo_principal": "Educação financeira",
+    "patrimonio_total": 2000.00,
+    "reserva_emergencia_atual": 500.00,
+    "aceita_risco": false,
+    "metas": [
+      {
+        "meta": "Criar reserva inicial",
+        "valor_necessario": 5000.00,
+        "prazo": "2026-12"
+      }
+    ]
+  },
+  {
+    "investidor_id": 6,
+    "nome": "Fernanda Lima",
+    "idade": 40,
+    "profissao": "Médica",
+    "renda_mensal": 18000.00,
+    "perfil_investidor": "moderado",
+    "objetivo_principal": "Proteção patrimonial",
+    "patrimonio_total": 600000.00,
+    "reserva_emergencia_atual": 100000.00,
+    "aceita_risco": false,
+    "metas": [
+      {
+        "meta": "Planejamento sucessório",
+        "valor_necessario": 0,
+        "prazo": "2026-01"
+      }
+    ]
+  },
+  {
+    "investidor_id": 7,
+    "nome": "Rafael Nogueira",
+    "idade": 30,
+    "profissao": "Product Manager",
+    "renda_mensal": 9000.00,
+    "perfil_investidor": "arrojado",
+    "objetivo_principal": "Liberdade financeira",
+    "patrimonio_total": 70000.00,
+    "reserva_emergencia_atual": 20000.00,
+    "aceita_risco": true,
+    "metas": [
+      {
+        "meta": "Renda passiva",
+        "valor_necessario": 300000.00,
+        "prazo": "2030-12"
+      }
+    ]
+  },
+  {
+    "investidor_id": 8,
+    "nome": "Juliana Rocha",
+    "idade": 27,
+    "profissao": "Social Media",
+    "renda_mensal": 3500.00,
+    "perfil_investidor": "moderado",
+    "objetivo_principal": "Comprar imóvel",
+    "patrimonio_total": 12000.00,
+    "reserva_emergencia_atual": 6000.00,
+    "aceita_risco": false,
+    "metas": [
+      {
+        "meta": "Entrada do imóvel",
+        "valor_necessario": 60000.00,
+        "prazo": "2028-06"
+      }
+    ]
+  },
+  {
+    "investidor_id": 9,
+    "nome": "Lucas Ferreira",
+    "idade": 38,
+    "profissao": "Engenheiro",
+    "renda_mensal": 11000.00,
+    "perfil_investidor": "moderado",
+    "objetivo_principal": "Equilíbrio financeiro",
+    "patrimonio_total": 95000.00,
+    "reserva_emergencia_atual": 25000.00,
+    "aceita_risco": true,
+    "metas": [
+      {
+        "meta": "Quitar financiamento",
+        "valor_necessario": 80000.00,
+        "prazo": "2027-12"
+      }
+    ]
+  },
+  {
+    "investidor_id": 10,
+    "nome": "Patricia Gomes",
+    "idade": 50,
+    "profissao": "Professora",
+    "renda_mensal": 6500.00,
+    "perfil_investidor": "conservador",
+    "objetivo_principal": "Aposentadoria segura",
+    "patrimonio_total": 300000.00,
+    "reserva_emergencia_atual": 50000.00,
+    "aceita_risco": false,
+    "metas": [
+      {
+        "meta": "Complementar aposentadoria",
+        "valor_necessario": 400000.00,
+        "prazo": "2032-01"
+      }
+    ]
+  }
+]
