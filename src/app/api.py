@@ -113,22 +113,55 @@ if st.button("🔍 Analisar Situação Financeira"):
 # =============================
 st.subheader("💬 Pergunte ao Fortis")
 
-with st.form(key="form_pergunta"):
-    pergunta_usuario = st.text_area("Digite sua pergunta aqui:")
-    enviar = st.form_submit_button("Enviar pergunta")
+# Inicializa flags de controle
+if "processando" not in st.session_state:
+    st.session_state.processando = False
+
+if "ultima_resposta" not in st.session_state:
+    st.session_state.ultima_resposta = ""
+
+with st.form(key="form_pergunta", clear_on_submit=False):
+    pergunta_usuario = st.text_area(
+        "Digite sua pergunta aqui:",
+        disabled=st.session_state.processando
+    )
+
+    enviar = st.form_submit_button(
+        "Enviar pergunta",
+        disabled=st.session_state.processando
+    )
 
     if enviar:
-        # Verifica se o contexto já foi gerado
+        # Validações básicas
         if "contexto" not in st.session_state:
             st.warning("⚠️ Primeiro clique em '🔍 Analisar Situação Financeira' para gerar o contexto.")
+
         elif not pergunta_usuario.strip():
             st.warning("⚠️ Por favor, digite uma pergunta antes de enviar.")
-        else:
-            try:
-                # Chama o agente Ollama usando o contexto do session_state
-                resposta_ollama = perguntar_fortis_ollama(pergunta_usuario, st.session_state.contexto)
-            except Exception as e:
-                resposta_ollama = f"Erro ao chamar Ollama: {e}"
 
-            st.subheader("🤖 Resposta do Fortis (Ollama)")
-            st.write(resposta_ollama)
+        else:
+            # 🔒 Trava a UI
+            st.session_state.processando = True
+            st.session_state.ultima_resposta = ""
+
+            with st.spinner("🛡️ Fortis está analisando sua situação financeira..."):
+                try:
+                    resposta = perguntar_fortis_ollama(
+                        pergunta_usuario,
+                        st.session_state.contexto
+                    )
+                    st.session_state.ultima_resposta = resposta
+
+                except Exception as e:
+                    st.session_state.ultima_resposta = f"❌ Erro ao chamar o Fortis: {e}"
+
+            # 🔓 Libera a UI
+            st.session_state.processando = False
+
+# =============================
+# Exibição da resposta
+# =============================
+if st.session_state.ultima_resposta:
+    st.subheader("🤖 Resposta do Fortis (Ollama)")
+    st.write(st.session_state.ultima_resposta)
+
